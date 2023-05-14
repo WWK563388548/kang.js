@@ -2,8 +2,10 @@ import { InlineConfig, build as viteBuild } from "vite";
 import type { RollupOutput } from "rollup";
 import pluginReact from "@vitejs/plugin-react";
 import { join } from "path";
-import * as fs from "fs-extra";
+import fs from 'fs-extra';
+import ora from "ora";
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from "./constants";
+
 
 export async function bundle(root: string) {
 
@@ -22,7 +24,7 @@ export async function bundle(root: string) {
       },
     }
   });
-
+  const spinner = ora();
   console.log("Building client + server bundles...");
 
   try {
@@ -66,7 +68,7 @@ export async function build(root: string) {
   const [clientBundle, serverBundle] = await bundle(root);
   // add ssr entry
   const serverEntryPath = join(root, ".temp", "ssr-entry.js");
-  const { render } = require(serverEntryPath);
+  const { render } = await import(serverEntryPath);
   // SSR render html
   await renderPage(render, root, clientBundle);
 }

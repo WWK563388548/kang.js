@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src" /* Specify the root folder within your source files. */,
+    "rootDir": "." /* Specify the root folder within your source files. */,
     "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "commonjs",
-    "jsx": "react-jsx",                                /* Specify what module code is generated. */
-  }
+    "jsx": "react-jsx", 
+    "esModuleInterop": true,                               /* Specify what module code is generated. */
+  },
+  // "exclude": ["tsup.config.ts"]
 }
