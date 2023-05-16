@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import siteData from 'kang:site-data';
 import { App } from './app';
 
 function renderInBrowser() {
@@ -9,4 +10,5 @@ function renderInBrowser() {
   createRoot(containerEl).render(<App />);
 }
 
+console.log(siteData);
 renderInBrowser();
