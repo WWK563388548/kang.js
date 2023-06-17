@@ -12,7 +12,7 @@ export async function createDevServer(
   const config = await resolveConfig(root, 'serve', 'development');
   console.log(config);
   return createViteDevServer({
-    root,
+    root: PACKAGE_ROOT,
     plugins: [
       indexHtmlPlugin(),
       pluginReact(),

@@ -1,19 +1,26 @@
 import { InlineConfig, build as viteBuild } from 'vite';
 import type { RollupOutput } from 'rollup';
 import pluginReact from '@vitejs/plugin-react';
-import { join } from 'path';
+import path, { join } from 'path';
 import fs from 'fs-extra';
 import ora from 'ora';
+import { SiteConfig } from 'shared/types';
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
+import { pluginConfig } from './plugin_kang/config';
 
-export async function bundle(root: string) {
+export async function bundle(root: string, config: SiteConfig) {
   const resolveViteConfig = (isServer: boolean): InlineConfig => ({
     mode: 'production',
     root,
-    plugins: [pluginReact()],
+    plugins: [pluginReact(), pluginConfig(config)],
+    ssr: {
+      // This configuration prevents cjs products from requiring ESM products, since the products of react-router-dom are in ESM format
+      noExternal: ['react-router-dom']
+    },
     build: {
+      minify: false,
       ssr: isServer,
-      outDir: isServer ? '.temp' : 'build',
+      outDir: isServer ? path.join(root, '.temp') : 'build',
       rollupOptions: {
         input: isServer ? SERVER_ENTRY_PATH : CLIENT_ENTRY_PATH,
         output: {
@@ -68,11 +75,15 @@ export async function renderPage(
   await fs.remove(join(root, '.temp'));
 }
 
-export async function build(root: string) {
-  const [clientBundle, serverBundle] = await bundle(root);
+export async function build(root: string, config: SiteConfig) {
+  const [clientBundle] = await bundle(root, config);
   // add ssr entry
   const serverEntryPath = join(root, '.temp', 'ssr-entry.js');
   const { render } = await import(serverEntryPath);
   // SSR render html
-  await renderPage(render, root, clientBundle);
+  try {
+    await renderPage(render, root, clientBundle);
+  } catch (e) {
+    console.error('Render page error.\n', e);
+  }
 }

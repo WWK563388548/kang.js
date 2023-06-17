@@ -1,6 +1,6 @@
 import { cac } from 'cac';
 import { resolve } from 'path';
-import { createDevServer } from './dev';
+import { resolveConfig } from './config';
 import { build } from './build';
 
 const cli = cac('kang').version('1.0.0').help();
@@ -20,11 +20,11 @@ cli.command('dev [root]', 'start dev server').action(async (root: string) => {
 
 cli
   .command('build [root]', 'build for production')
-  .alias('build')
   .action(async (root: string) => {
     try {
       root = resolve(root);
-      await build(root);
+      const config = await resolveConfig(root, 'build', 'production');
+      await build(root, config);
     } catch (error) {
       console.error(error);
     }
