@@ -4,6 +4,7 @@ import pluginReact from '@vitejs/plugin-react';
 import { resolveConfig } from './config';
 import { pluginConfig } from './plugin_kang/config';
 import { PACKAGE_ROOT } from './constants';
+import { pluginRoutes } from './plugin-routes';
 
 export async function createDevServer(
   root,
@@ -16,7 +17,10 @@ export async function createDevServer(
     plugins: [
       indexHtmlPlugin(),
       pluginReact(),
-      pluginConfig(config, restartServer)
+      pluginConfig(config, restartServer),
+      pluginRoutes({
+        root: config.root
+      })
     ],
     server: {
       fs: {

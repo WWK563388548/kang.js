@@ -8,7 +8,7 @@ interface PluginOptions {
 
 export const CONVENTIONAL_ROUTE_ID = 'kang:routes';
 
-export function PluginRoutes(options: PluginOptions): Plugin {
+export function pluginRoutes(options: PluginOptions): Plugin {
   const routeService = new RouteService(options.root);
 
   return {
