@@ -6,13 +6,13 @@ import fs from 'fs-extra';
 import ora from 'ora';
 import { SiteConfig } from 'shared/types';
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
-import { pluginConfig } from './plugin_kang/config';
+import { createVitePlugins } from './vitePlugins';
 
 export async function bundle(root: string, config: SiteConfig) {
   const resolveViteConfig = (isServer: boolean): InlineConfig => ({
     mode: 'production',
     root,
-    plugins: [pluginReact(), pluginConfig(config)],
+    plugins: createVitePlugins(config),
     ssr: {
       // This configuration prevents cjs products from requiring ESM products, since the products of react-router-dom are in ESM format
       noExternal: ['react-router-dom']

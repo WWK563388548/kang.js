@@ -1,10 +1,7 @@
 import { createServer as createViteDevServer } from 'vite';
-import { indexHtmlPlugin } from './plugin_kang/indexHtml';
-import pluginReact from '@vitejs/plugin-react';
 import { resolveConfig } from './config';
-import { pluginConfig } from './plugin_kang/config';
 import { PACKAGE_ROOT } from './constants';
-import { pluginRoutes } from './plugin-routes';
+import { createVitePlugins } from './vitePlugins';
 
 export async function createDevServer(
   root,
@@ -14,14 +11,7 @@ export async function createDevServer(
   console.log(config);
   return createViteDevServer({
     root: PACKAGE_ROOT,
-    plugins: [
-      indexHtmlPlugin(),
-      pluginReact(),
-      pluginConfig(config, restartServer),
-      pluginRoutes({
-        root: config.root
-      })
-    ],
+    plugins: createVitePlugins(config, restartServer),
     server: {
       fs: {
         allow: [PACKAGE_ROOT]
