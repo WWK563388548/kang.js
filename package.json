@@ -8,7 +8,7 @@
     "build": "tsup",
     "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx --quiet ./",
     "prepare": "husky install",
-    "test:init": "vitest run"
+    "test:unit": "vitest run"
   },
   "keywords": [],
   "author": "",
@@ -47,6 +47,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.1",
+    "hast-util-from-html": "^2.0.1",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -59,6 +60,7 @@
     "remark-mdx-frontmatter": "^3.0.0",
     "remark-parse": "^10.0.2",
     "remark-rehype": "^10.1.0",
+    "shiki": "^1.10.1",
     "vite": "^4.3.5"
   },
   "lint-staged": {
