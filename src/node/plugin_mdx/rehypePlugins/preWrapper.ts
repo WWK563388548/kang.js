@@ -1,6 +1,10 @@
 import type { Plugin } from 'unified';
 import { visit } from 'unist-util-visit';
-import type { Element, Root } from 'hast';
+import type { Element, Root, ElementData } from 'hast';
+
+interface ExtendedElementData extends ElementData {
+  isVisited?: boolean;
+}
 
 export const rehypePluginPreWrapper: Plugin<[], Root> = () => {
   return (tree) => {
@@ -18,15 +22,14 @@ export const rehypePluginPreWrapper: Plugin<[], Root> = () => {
         // language-xxx
         const lang = codeClassName.split('-')[1];
 
-        codeNode.properties.className = '';
-
         const clonedNode: Element = {
           type: 'element',
           tagName: 'pre',
           children: node.children,
           data: {
+            ...node.data,
             isVisited: true
-          },
+          } as ExtendedElementData, // Casting to ExtendedElementData
           properties: undefined
         };
 
